@@ -176,3 +176,23 @@ INSERT INTO dungeon VALUES
 (1, 'The Stonevault', 2, '33:00'),
 (2, 'The Dawnbreaker', 13, '35:00'),
 (3, 'Ara-Kara, City of Echoes', 29, '30:00');
+
+
+-- mise en place de la partie authentification
+CREATE TABLE player(
+    id SERIAL PRIMARY KEY NOT NULL,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(256) NOT NULL,
+    email VARCHAR(50) NOT NULL UNIQUE,
+    role_id VARCHAR(50) NOT NULL DEFAULT 'user'
+);
+
+CREATE TABLE belong_to(
+    character_id INT NOT NULL,
+    player_id INT NOT NULL,
+    PRIMARY KEY (character_id, player_id)
+);
+
+ALTER TABLE belong_to
+ADD CONSTRAINT fk_character FOREIGN KEY (character_id) REFERENCES characters(id),
+ADD CONSTRAINT fk_player FOREIGN KEY (player_id) REFERENCES player(id);
